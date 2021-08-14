@@ -2,6 +2,13 @@ import { Directive, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/co
 import { Calendar } from 'primeng/calendar';
 
 const defaultSelectionMode = 'single';
+const primeNgButtonClasses = 'p-button-text p-ripple p-button p-component';
+const buttonTextSingle = `Selection Mode Single
+Change to Range
+`;
+const buttonTextRange  = `Selection Mode Range
+Change to Single
+`;
 
 @Directive({
   selector: '[calendarModeToggle]'
@@ -48,7 +55,8 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
     const buttonBar = this.el.nativeElement.querySelector('.p-datepicker-buttonbar');
     const lastButton = buttonBar.children[1];
     const toggleButton = this.rn.createElement('button');
-    this.rn.setAttribute(toggleButton, 'class', 'p-button-text p-ripple p-button p-component');
+
+    this.rn.setAttribute(toggleButton, 'class', primeNgButtonClasses);
     this.rn.setAttribute(toggleButton, 'style', 'font-size: smaller');
 
     this.stopListening = this.rn.listen(toggleButton, 'click', () => this.toggleMode());
@@ -59,14 +67,6 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
   }
 
   setButtonLabel() {
-    this.toggleButton.innerText = this.mode === 'single' ? this.buttonTextSingle : this.buttonTextRange;
+    this.toggleButton.innerText = this.mode === 'single' ? buttonTextSingle : buttonTextRange;
   }
-
-  buttonTextSingle = `  Selection Mode Single
-  Change to Range
-  `;
-
-  buttonTextRange = `  Selection Mode Range
-  Change to Single
-  `
 }
