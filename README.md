@@ -8,15 +8,23 @@ https://stackblitz.com/edit/primeng-calendar-demo-with-selectionmode-toggle-dire
 
 <br>
 
-I put the toggle button in the button bar below the calendar because it seemed like a convenient place for it.
-
-<br>
-
 It just toggles between 'range' mode and 'single' mode but feel free to take the code and enhance it however you want.
 
 <br>
 
-Here's what it looks like applied to the `p-calendar` component:
+Here's what the calendar looks like. I put the toggle button in the middle of the button bar because it seemed like a convenient place for it.
+
+#### Single-select Mode
+
+![Calendar in Single-select Mode](/images/mode-single.png?raw=true)
+
+#### Range-select Mode
+
+![Calendar in Range-select Mode](/images/mode-range.png?raw=true)
+
+<br>
+
+And here's what the Directive looks like applied to the `p-calendar` component:
 
 ```html
 <p-calendar 
@@ -29,13 +37,3 @@ Here's what it looks like applied to the `p-calendar` component:
     inputId="range">
 </p-calendar>
 ```
-
-And here's what the calendar looks like with the button in the middle of the button bar:
-
-#### Single-select Mode
-
-![Calendar in Single-select Mode](/images/mode-single.png?raw=true)
-
-#### Range-select Mode
-
-![Calendar in Range-select Mode](/images/mode-range.png?raw=true)
