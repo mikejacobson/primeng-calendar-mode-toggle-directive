@@ -1,5 +1,5 @@
 # primeng-calendar-mode-toggle-directive
-### Angular 11 Directive that adds Selection Mode toggle to PrimeNG Calendar component
+### Angular 11 Directive that adds Selection Mode toggle to [PrimeNG Calendar component](https://www.primefaces.org/primeng/showcase/#/calendar)
 
 <br>
 Working StackBlitz:
