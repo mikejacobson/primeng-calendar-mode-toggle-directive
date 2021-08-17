@@ -12,7 +12,7 @@ It just toggles between 'range' mode and 'single' mode but feel free to take the
 
 <br>
 
-Here's what the calendar looks like. I put the toggle buttons in the middle of the button bar because it seemed like a convenient place for it.
+Here's what the calendar looks like. I put the toggle buttons in the middle of the button bar because it seemed like a convenient and nice place for them.
 
 #### Single-select Mode
 
@@ -66,3 +66,9 @@ And here's what the Directive looks like applied to the `p-calendar` component. 
   </div>
 </template>
 ```
+
+If you'd rather have the Directive create the buttons programmatically instead of defining them in the template, this StackBlitz has a version of the Directive that does it that way:
+
+https://stackblitz.com/edit/primeng-calendar-demo-with-selectionmode-toggle-directive?file=src%2Fapp%2Fcalendar-mode-toggle.directive.ts
+
+(That was my first approach but then I found it was nicer defining them in the template.)
