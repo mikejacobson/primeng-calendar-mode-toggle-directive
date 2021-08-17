@@ -1,22 +1,18 @@
-import { Directive, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Calendar } from 'primeng/calendar';
 
 const defaultSelectionMode = 'single';
-const primeNgButtonClasses = 'p-button-text p-ripple p-button p-component';
-const buttonTextSingle = `Selection Mode Single
-Change to Range
-`;
-const buttonTextRange  = `Selection Mode Range
-Change to Single
-`;
+const selectedClass = 'selected';
 
 @Directive({
   selector: '[calendarModeToggle]'
 })
 export class CalendarModeToggleDirective implements OnInit, OnDestroy {
+  @Input('calendarModeToggle') toggleWrapper: HTMLDivElement;
+
   mode: string;
-  toggleButton: HTMLButtonElement;
   stopListening;
+  buttons;
 
   constructor(
     private el: ElementRef,
@@ -30,43 +26,52 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
     this.calendar.onShow.subscribe(() => {
       this.addToggleButtonToButtonBar();
     });
-
-    this.calendar.onClose.subscribe(() => {
-      this.stopListening();
-      this.stopListening = null;
-      this.toggleButton = null;
-    });
   }
 
   ngOnDestroy() {
+    this.disconnectAllClickListeners();
+    this.deselectAllButtons();
+  }
+
+  disconnectAllClickListeners() {
     if (this.stopListening) {
-      this.stopListening();
+      this.stopListening.forEach(fn => fn());
     }
   }
 
-  toggleMode() {
-    this.mode = this.mode === 'range' ? 'single' : 'range';
-    this.calendar.selectionMode = this.mode;
-    this.calendar.writeValue(null);
-    this.setButtonLabel();
+  deselectAllButtons() {
+    this.buttons.forEach((button: HTMLButtonElement) => {
+      this.rn.removeClass(button, selectedClass);
+    });
   }
 
   addToggleButtonToButtonBar() {
+    if (!this.buttons) {
+      this.buttons = this.toggleWrapper.querySelectorAll('button');
+
+      const btnDate = this.buttons[0];
+      const btnRange = this.buttons[1];
+  
+      this.rn.addClass(btnDate, selectedClass);
+
+      this.stopListening = [
+        this.rn.listen(btnDate, 'click', () => this.toggleMode('single', btnDate)),
+        this.rn.listen(btnRange, 'click', () => this.toggleMode('range', btnRange))
+      ];
+    }
+
     const buttonBar = this.el.nativeElement.querySelector('.p-datepicker-buttonbar');
     const lastButton = buttonBar.children[1];
-    const toggleButton = this.rn.createElement('button');
 
-    this.rn.setAttribute(toggleButton, 'class', primeNgButtonClasses);
-    this.rn.setAttribute(toggleButton, 'style', 'font-size: smaller');
-
-    this.stopListening = this.rn.listen(toggleButton, 'click', () => this.toggleMode());
-    this.rn.insertBefore(buttonBar, toggleButton, lastButton);
-
-    this.toggleButton = toggleButton;
-    this.setButtonLabel();
+    this.rn.insertBefore(buttonBar, this.toggleWrapper, lastButton);
   }
 
-  setButtonLabel() {
-    this.toggleButton.innerText = this.mode === 'single' ? buttonTextSingle : buttonTextRange;
+  toggleMode(newMode: string, clickedButton: HTMLButtonElement) {
+    this.mode = newMode;
+    this.calendar.selectionMode = this.mode;
+    this.calendar.writeValue(null);
+
+    this.deselectAllButtons();
+    this.rn.addClass(clickedButton, selectedClass);
   }
 }

@@ -1,0 +1,38 @@
+<p-calendar 
+  [(ngModel)]="rangeDates"
+  selectionMode="single"
+  [calendarModeToggle]="modeToggle"
+  [showButtonBar]="true"
+  calendarModeToggle
+  [readonlyInput]="true"
+  inputId="range">
+</p-calendar>
+<template>
+  <div #modeToggle class="toggle-wrapper">
+    <style>
+      .toggle-wrapper {
+        display: flex;
+        align-items: center;
+      }
+
+      .toggle-wrapper button {
+        letter-spacing: 0.235px;
+        padding: 8px;
+      }
+
+      .toggle-wrapper button.selected {
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .toggle-wrapper span {
+        font-size: 1.25em;
+        opacity: 0.7;
+        padding: 0;
+      }
+    </style>
+    <button class="p-button-text p-ripple p-button p-component">Date</button>
+    <span class="p-button p-button-text">|</span>
+    <button class="p-button-text p-ripple p-button p-component">Date Range</button>
+  </div>
+</template>
