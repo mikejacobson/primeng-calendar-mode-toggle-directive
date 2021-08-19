@@ -67,8 +67,6 @@ And here's what the Directive looks like applied to the `p-calendar` component. 
 </template>
 ```
 
-If you'd rather have the Directive create the buttons programmatically instead of defining them in the template, this StackBlitz has a version of the Directive that does it that way:
+If you'd rather have the Directive create the buttons programmatically instead of defining them in the template, see this version of the directive:
 
-https://stackblitz.com/edit/primeng-calendar-demo-with-selectionmode-toggle-directive?file=src%2Fapp%2Fcalendar-mode-toggle.directive.ts
-
-(That was my first approach but then I found it was nicer defining them in the template.)
+https://github.com/mikejacobson/primeng-calendar-mode-toggle-directive-using-renderer
