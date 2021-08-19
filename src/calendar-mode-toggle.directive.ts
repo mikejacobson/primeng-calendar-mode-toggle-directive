@@ -26,11 +26,29 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
     this.calendar.onShow.subscribe(() => {
       this.addToggleButtonToButtonBar();
     });
+
+    this.calendar.onTodayClick.subscribe(() => {
+      this.handleTodayClick();
+    });
   }
 
   ngOnDestroy() {
     this.disconnectAllClickListeners();
     this.deselectAllButtons();
+  }
+
+  handleTodayClick() {
+    if (this.calendar.selectionMode === 'single') {
+      return;
+    }
+
+    this.calendar.value = this.calendar.value[0];
+
+    setTimeout(() => {
+      this.setMode('single', this.buttons[0]);
+      this.calendar.writeValue(this.calendar.value);
+      this.calendar.hideOverlay();
+    });
   }
 
   disconnectAllClickListeners() {
@@ -55,8 +73,8 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
       this.rn.addClass(btnDate, selectedClass);
 
       this.stopListening = [
-        this.rn.listen(btnDate, 'click', () => this.toggleMode('single', btnDate)),
-        this.rn.listen(btnRange, 'click', () => this.toggleMode('range', btnRange))
+        this.rn.listen(btnDate, 'click', () => this.setMode('single', btnDate, true)),
+        this.rn.listen(btnRange, 'click', () => this.setMode('range', btnRange, true))
       ];
     }
 
@@ -66,12 +84,38 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
     this.rn.insertBefore(buttonBar, this.toggleWrapper, lastButton);
   }
 
-  toggleMode(newMode: string, clickedButton: HTMLButtonElement) {
+  setMode(newMode: string, clickedButton: HTMLButtonElement, clearSelection = false) {
     this.mode = newMode;
     this.calendar.selectionMode = this.mode;
-    this.calendar.writeValue(null);
 
     this.deselectAllButtons();
     this.rn.addClass(clickedButton, selectedClass);
+
+    if (clearSelection) {
+      this.clearDateSelection();
+    }
+  }
+
+  clearDateSelection() {
+    const selectedMonth = this.calendar.currentMonth;
+    const selectedYear = this.calendar.currentYear;
+
+    this.calendar.writeValue(null);
+
+    let didRestoreSelection = false;
+
+    if (this.calendar.currentMonth !== selectedMonth) {
+      this.calendar.currentMonth = selectedMonth;
+      didRestoreSelection = true;
+    }
+
+    if (this.calendar.currentYear !== selectedYear) {
+      this.calendar.currentYear = selectedYear;
+      didRestoreSelection = true;
+    }
+
+    if (didRestoreSelection) {
+      this.calendar.createMonths(this.calendar.currentMonth, this.calendar.currentYear);
+    }
   }
 }
