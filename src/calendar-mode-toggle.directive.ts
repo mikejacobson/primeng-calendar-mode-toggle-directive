@@ -1,7 +1,6 @@
 import { Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Calendar } from 'primeng/calendar';
 
-const defaultSelectionMode = 'single';
 const selectedClass = 'selected';
 
 @Directive({
@@ -10,7 +9,6 @@ const selectedClass = 'selected';
 export class CalendarModeToggleDirective implements OnInit, OnDestroy {
   @Input('calendarModeToggle') toggleWrapper: HTMLDivElement;
 
-  mode: string;
   stopListening;
   buttons;
 
@@ -21,8 +19,6 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.mode = this.calendar.selectionMode || defaultSelectionMode;
-
     this.calendar.onShow.subscribe(() => {
       this.addToggleButtonToButtonBar();
     });
@@ -85,8 +81,7 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
   }
 
   setMode(newMode: string, clickedButton: HTMLButtonElement, { clearSelection = false } = {}) {
-    this.mode = newMode;
-    this.calendar.selectionMode = this.mode;
+    this.calendar.selectionMode = newMode;
 
     this.deselectAllButtons();
     this.rn.addClass(clickedButton, selectedClass);
