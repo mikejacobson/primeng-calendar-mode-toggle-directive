@@ -73,8 +73,8 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
       this.rn.addClass(btnDate, selectedClass);
 
       this.stopListening = [
-        this.rn.listen(btnDate, 'click', () => this.setMode('single', btnDate, true)),
-        this.rn.listen(btnRange, 'click', () => this.setMode('range', btnRange, true))
+        this.rn.listen(btnDate, 'click', () => this.setMode('single', btnDate, { clearSelection: true })),
+        this.rn.listen(btnRange, 'click', () => this.setMode('range', btnRange, { clearSelection: true }))
       ];
     }
 
@@ -84,7 +84,7 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
     this.rn.insertBefore(buttonBar, this.toggleWrapper, lastButton);
   }
 
-  setMode(newMode: string, clickedButton: HTMLButtonElement, clearSelection = false) {
+  setMode(newMode: string, clickedButton: HTMLButtonElement, { clearSelection = false } = {}) {
     this.mode = newMode;
     this.calendar.selectionMode = this.mode;
 
