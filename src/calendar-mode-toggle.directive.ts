@@ -80,8 +80,12 @@ export class CalendarModeToggleDirective implements OnInit, OnDestroy {
     this.rn.insertBefore(buttonBar, this.toggleWrapper, lastButton);
   }
 
-  setMode(newMode: string, clickedButton: HTMLButtonElement, { clearSelection = false } = {}) {
-    this.calendar.selectionMode = newMode;
+  setMode(selectedMode: string, clickedButton: HTMLButtonElement, { clearSelection = false } = {}) {
+    if (this.calendar.selectionMode === selectedMode) {
+      return;
+    }
+
+    this.calendar.selectionMode = selectedMode;
 
     this.deselectAllButtons();
     this.rn.addClass(clickedButton, selectedClass);
